@@ -1,24 +1,18 @@
 ﻿
 
 
+using Calc.Models;
+
 namespace Calc.ModelsLogic
 {
-    public class Calculator
+    public class Calculator:CalculatorModel
     {
-        private readonly Label lblDisplay;
-        public Calculator(Grid grdMain)
+        public Calculator(Grid grdMain):base()
         {
-            lblDisplay = new()
-            {
-                FontSize = 30,
-                Margin = 2,
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center
-            };
             InitGrid(grdMain);
         }
 
-        private void InitGrid(Grid grdMain)
+        protected override void InitGrid(Grid grdMain)
         {
             int value = 1;
             grdMain.AddWithSpan(lblDisplay, 0, 0, 1, 4);
@@ -34,7 +28,7 @@ namespace Calc.ModelsLogic
             AddButton(grdMain, "Clr", 1, 4);
         }
 
-        private void AddButton(Grid grdMain, string text, int column, int row)
+        protected override void AddButton(Grid grdMain, string text, int column, int row)
         {
             Button b = new()
             {
@@ -46,7 +40,7 @@ namespace Calc.ModelsLogic
             grdMain.Add(b, column, row);
         }
 
-        private void OnButtonClick(object? sender, EventArgs e)
+        protected override void OnButtonClick(object? sender, EventArgs e)
         {
             if (sender != null)
             {
@@ -59,10 +53,9 @@ namespace Calc.ModelsLogic
                 else
                     lblDisplay.Text +=cmd;
             }
-
         }
 
-        private void Calculate()
+        protected override void Calculate()
         {
             string expration = lblDisplay.Text;
             if (expration.Contains('+'))
@@ -71,7 +64,7 @@ namespace Calc.ModelsLogic
                 if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right))
                     lblDisplay.Text = (left + right).ToString();
             }
-            else if (expration.Contains("-"))
+            else if (expration.Contains('-'))
             {
                 string[] parts = expration.Split('-');
                 if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right))
@@ -83,7 +76,7 @@ namespace Calc.ModelsLogic
                 if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right))
                     lblDisplay.Text = (left * right).ToString();
             }
-            else if (expration.Contains("/"))
+            else if (expration.Contains('/'))
             {
                 string[] parts = expration.Split('/');
                 if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right) && right != 0)
