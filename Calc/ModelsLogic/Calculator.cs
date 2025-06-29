@@ -1,35 +1,40 @@
 ﻿
+
+
 namespace Calc.ModelsLogic
 {
-    internal class Calculator
+    public class Calculator
     {
-        Label display;
-        public Calculator(Grid grdMain) 
+        private readonly Label lblDisplay;
+        public Calculator(Grid grdMain)
         {
-            InitGrid(grdMain);
-            display = new()
+            lblDisplay = new()
             {
                 FontSize = 30,
-                Margin = 2
+                Margin = 2,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
             };
+            InitGrid(grdMain);
         }
 
         private void InitGrid(Grid grdMain)
         {
             int value = 1;
-            grdMain.AddWithSpan(display, 0, 0, 1, 4);
+            grdMain.AddWithSpan(lblDisplay, 0, 0, 1, 4);
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
-                    AddButton(grdMain, value++.ToString(), j, i + 1, 1);
-            AddButton(grdMain, "+", 3, 1, 1);
-            AddButton(grdMain, "-", 3, 2, 1);
-            AddButton(grdMain, "x", 3, 3, 1);
-            AddButton(grdMain, "/", 3, 4, 1);
-            AddButton(grdMain, "0", 2, 4, 1);
-            AddButton(grdMain, "=", 0, 4, 2);
+                    AddButton(grdMain, value++.ToString(), j, i + 1);
+            AddButton(grdMain, "+", 3, 1);
+            AddButton(grdMain, "-", 3, 2);
+            AddButton(grdMain, "*", 3, 3);
+            AddButton(grdMain, "/", 3, 4);
+            AddButton(grdMain, "0", 2, 4);
+            AddButton(grdMain, "=", 0, 4);
+            AddButton(grdMain, "Clr", 1, 4);
         }
 
-        private static void AddButton(Grid grdMain,string text,int column,int row,int columnSpan)
+        private void AddButton(Grid grdMain, string text, int column, int row)
         {
             Button b = new()
             {
@@ -37,10 +42,55 @@ namespace Calc.ModelsLogic
                 FontSize = 30,
                 Text = text
             };
-            if(columnSpan==1)
-                grdMain.Add(b, column, row);
+            b.Clicked += OnButtonClick;
+            grdMain.Add(b, column, row);
+        }
+
+        private void OnButtonClick(object? sender, EventArgs e)
+        {
+            if (sender != null)
+            {
+                Button btn = (Button)sender;
+                string cmd = btn.Text;
+                if (cmd == "Clr")
+                    lblDisplay.Text = string.Empty;
+                else if (cmd == "=")
+                    Calculate();
+                else
+                    lblDisplay.Text +=cmd;
+            }
+
+        }
+
+        private void Calculate()
+        {
+            string expration = lblDisplay.Text;
+            if (expration.Contains('+'))
+            {
+                string[] parts = expration.Split('+');
+                if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right))
+                    lblDisplay.Text = (left + right).ToString();
+            }
+            else if (expration.Contains("-"))
+            {
+                string[] parts = expration.Split('-');
+                if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right))
+                    lblDisplay.Text = (left - right).ToString();
+            }
+            else if (expration.Contains('*'))
+            {
+                string[] parts = expration.Split('*');
+                if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right))
+                    lblDisplay.Text = (left * right).ToString();
+            }
+            else if (expration.Contains("/"))
+            {
+                string[] parts = expration.Split('/');
+                if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right) && right != 0)
+                    lblDisplay.Text = (left / right).ToString();
+            }
             else
-                grdMain.AddWithSpan(b, row,column,1,columnSpan);
+                lblDisplay.Text = "Not leagal Expretion";
         }
     }
 }
