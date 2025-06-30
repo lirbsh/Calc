@@ -54,6 +54,7 @@ namespace Calc.ModelsLogic
 
         protected override void Calculate()
         {
+<<<<<<< HEAD
             static double Add(double x, double y) => x + y;
             static double Substruct(double x, double y) => x - y;
             static double Multiply(double x, double y) => x * y;
