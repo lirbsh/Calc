@@ -1,8 +1,5 @@
 ﻿
-
-
 using Calc.Models;
-
 namespace Calc.ModelsLogic
 {
     public class Calculator:CalculatorModel
@@ -57,33 +54,34 @@ namespace Calc.ModelsLogic
 
         protected override void Calculate()
         {
-            string expration = lblDisplay.Text;
-            if (expration.Contains('+'))
+            Func<double, double, double> Add = (x, y) => x + y;
+            Func<double, double, double> Substruct = (x, y) => x - y;
+            Func<double, double, double> Multiply = (x, y) => x * y;
+            Func<double, double, double> Devide = (x, y) => x / y;
+            Func<double, double, double>[] funcs = { Add, Substruct, Multiply, Devide };
+            string oparators = "+-*/";
+            string expration = lblDisplay.Text, separator = string.Empty, result = string.Empty;
+            bool found = false;
+            string[] parts = [];
+            for (int i = 0; i < oparators.Length && !found; i++)
             {
-                string[] parts = expration.Split('+');
-                if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right))
-                    lblDisplay.Text = (left + right).ToString();
+                separator = oparators.Substring(i, 1);
+                if (expration.Contains(separator))
+                {
+                    parts = expration.Split(separator);
+                    if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right))
+                    {
+                        if(i == 3 && right == 0 && separator == "/")
+                           result = "Division by zero is not allowed";
+                        else
+                            result = funcs[i](left, right).ToString();
+                        found = true;
+                    }
+                }
             }
-            else if (expration.Contains('-'))
-            {
-                string[] parts = expration.Split('-');
-                if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right))
-                    lblDisplay.Text = (left - right).ToString();
-            }
-            else if (expration.Contains('*'))
-            {
-                string[] parts = expration.Split('*');
-                if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right))
-                    lblDisplay.Text = (left * right).ToString();
-            }
-            else if (expration.Contains('/'))
-            {
-                string[] parts = expration.Split('/');
-                if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right) && right != 0)
-                    lblDisplay.Text = (left / right).ToString();
-            }
-            else
-                lblDisplay.Text = "Not leagal Expretion";
+            if(!found)
+                result = "Not leagal Expretion";
+            lblDisplay.Text = result;
         }
     }
 }
