@@ -72,7 +72,7 @@ namespace Calc.ModelsLogic
                     if (parts.Length == 2 && double.TryParse(parts[0], out double left) && double.TryParse(parts[1], out double right))
                     {
                         if(i == 3 && right == 0 && separator == "/")
-                           result = "Division by zero is not allowed";
+                            result = "Division by zero is not allowed";
                         else
                             result = funcs[i](left, right).ToString();
                         found = true;
