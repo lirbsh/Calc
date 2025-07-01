@@ -8,7 +8,7 @@
     Title="Calc">
 
     <ShellContent
-        Title="Home"
+        Title="Dynamic Calculator"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 

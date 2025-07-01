@@ -22,7 +22,8 @@ namespace Calc.Models
         protected abstract void InitGrid(Grid grdMain);
         protected abstract void AddButton(Grid grdMain, string text, int column, int row);
         protected abstract void OnButtonClick(object? sender, EventArgs e);
-        protected abstract void Calculate();
+        protected abstract void Calculate(bool xml);
+        public abstract void OnXMLButtonClick(string cmd);
 
     }
 }

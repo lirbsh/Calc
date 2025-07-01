@@ -7,7 +7,7 @@ namespace Calc
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = new MainPageVM(grdMain);
+            _ = new MainPageVM(grdMain);
         }
     }
 }
