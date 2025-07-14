@@ -1,10 +1,8 @@
-﻿
-using Calc.Models;
+﻿using Calc.Models;
 namespace Calc.ModelsLogic
 {
     public class Calculator : CalculatorModel
     {
-        public string Display { get; private set; } = string.Empty;
         public Calculator(Grid grdMain) : base()
         {
             InitGrid(grdMain);

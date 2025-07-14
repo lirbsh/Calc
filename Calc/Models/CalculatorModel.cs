@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Calc.Models
+﻿namespace Calc.Models
 {
     public abstract class CalculatorModel
     {
+        public string Display { get; protected set; } = string.Empty;
+
         protected readonly Label lblDisplay;
         public CalculatorModel()
         {
